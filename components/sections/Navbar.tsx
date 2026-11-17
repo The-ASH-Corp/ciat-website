@@ -37,7 +37,7 @@ export default function Navbar() {
             About
           </a>
           <a
-            href="/#contact"
+            href="/contact"
             className="text-[#08344E]/85 hover:text-[#00AEEF] transition-colors"
           >
             Contact
@@ -60,7 +60,7 @@ export default function Navbar() {
         {/* Header Action Button: Themed Cyan/Green Pill Button */}
         <div className="hidden md:flex items-center">
           <a
-            href="/#contact"
+            href="/contact"
             className="bg-[#00AEEF] hover:bg-[#00A556] text-white font-semibold text-[15px] px-7 py-2.5 rounded-full transition-all duration-300 shadow-sm hover:shadow-md active:scale-95"
           >
             Contact Us
@@ -99,7 +99,7 @@ export default function Navbar() {
             About
           </a>
           <a
-            href="/#contact"
+            href="/contact"
             onClick={() => setMobileMenuOpen(false)}
             className="py-1 hover:text-[#00AEEF]"
           >
@@ -121,7 +121,7 @@ export default function Navbar() {
             Course
           </a>
           <a
-            href="/#contact"
+            href="/contact"
             onClick={() => setMobileMenuOpen(false)}
             className="inline-block text-center bg-[#00AEEF] hover:bg-[#00A556] text-white font-semibold py-3 rounded-full mt-2 shadow-sm transition-colors"
           >
