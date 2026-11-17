@@ -9,10 +9,10 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Inviz - Business Consulting & Investment",
+  title: "CIAT - Institute of Accounts & Management",
   description: "Invest Smart For Grow Your Wealth. The best solution for your business to grow and succeed.",
   icons: {
-    icon: "/images/inviz-logo.png",
+    icon: "/images/ciat-logo.png",
   },
 };
 
