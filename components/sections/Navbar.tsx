@@ -50,10 +50,10 @@ export default function Navbar() {
           </a>
 
           <a
-            href="/#course"
+            href="/courses"
             className="text-[#08344E]/85 hover:text-[#00AEEF] transition-colors"
           >
-            Course
+            Courses
           </a>
         </nav>
 
@@ -114,11 +114,11 @@ export default function Navbar() {
           </a>
 
           <a
-            href="/#course"
+            href="/courses"
             onClick={() => setMobileMenuOpen(false)}
             className="py-1 hover:text-[#00AEEF]"
           >
-            Course
+            Courses
           </a>
           <a
             href="/contact"
