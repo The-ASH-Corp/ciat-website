@@ -31,7 +31,7 @@ export default function Navbar() {
             Home
           </a>
           <a
-            href="/#about"
+            href="/about"
             className="text-[#08344E]/85 hover:text-[#00AEEF] transition-colors"
           >
             About
@@ -92,7 +92,7 @@ export default function Navbar() {
             Home
           </a>
           <a
-            href="/#about"
+            href="/about"
             onClick={() => setMobileMenuOpen(false)}
             className="py-1 hover:text-[#00AEEF]"
           >
