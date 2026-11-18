@@ -1,5 +1,4 @@
 import Hero from "@/components/sections/Hero";
-import ClientLogos from "@/components/sections/ClientLogos";
 import Features from "@/components/sections/Features";
 import About from "@/components/sections/About";
 import Stats from "@/components/sections/Stats";
@@ -14,7 +13,6 @@ export default function HomePage() {
   return (
     <main className="min-h-screen bg-white text-[#4F4F4F] font-sans selection:bg-[#00AEEF] selection:text-white">
       <Hero />
-      <ClientLogos />
       <Features />
       <About />
       <Stats />

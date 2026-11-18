@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Play, TrendingUp, CreditCard, Shield } from "lucide-react";
 import UnderlineHighlight from "@/components/ui/UnderlineHighlight";
 import VideoModal from "@/components/ui/VideoModal";
+import CurveClientLogos from "@/components/sections/CurveClientLogos";
 
 interface HeroProps {
   onWatchVideo?: () => void;
@@ -58,6 +59,11 @@ export default function Hero({ onWatchVideo }: HeroProps) {
                   Watch Video
                 </span>
               </button>
+            </div>
+
+            {/* Mobile / Tablet Client Logos (Rotating 2-by-2) */}
+            <div className="block lg:hidden mt-8 pt-4 border-t border-[#08344E]/10">
+              <CurveClientLogos />
             </div>
           </div>
 
@@ -130,6 +136,15 @@ export default function Hero({ onWatchVideo }: HeroProps) {
           alt=""
           className="w-full h-auto min-h-[50px] object-cover object-bottom"
         />
+      </div>
+
+      {/* Desktop Curve Client Logos (Rendered inside the empty white curve shelf on bottom-left) */}
+      <div className="hidden lg:block absolute left-0 bottom-6 lg:bottom-7 w-full z-20 pointer-events-auto">
+        <div className="max-w-[1240px] mx-auto px-6">
+          <div className="w-7/12">
+            <CurveClientLogos />
+          </div>
+        </div>
       </div>
 
       {/* Embedded Video Modal */}
