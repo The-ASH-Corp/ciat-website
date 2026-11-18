@@ -24,13 +24,13 @@ export default function Footer() {
               <h4 className="text-lg font-bold text-[#08344E] mb-5">Menu</h4>
               <ul className="space-y-3 text-sm text-[#797979]">
                 <li>
-                  <a href="#" className="hover:text-[#00AEEF] transition-colors">
+                  <a href="/" className="hover:text-[#00AEEF] transition-colors">
                     Home
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#about"
+                    href="/about"
                     className="hover:text-[#00AEEF] transition-colors"
                   >
                     About
@@ -38,15 +38,23 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="#services"
+                    href="/placements"
                     className="hover:text-[#00AEEF] transition-colors"
                   >
-                    Services
+                    Placements
                   </a>
                 </li>
                 <li>
                   <a
-                    href="#contact"
+                    href="/courses"
+                    className="hover:text-[#00AEEF] transition-colors"
+                  >
+                    Courses
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="/contact"
                     className="hover:text-[#00AEEF] transition-colors"
                   >
                     Contact
