@@ -38,6 +38,14 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
+                    href="/placements"
+                    className="hover:text-[#00AEEF] transition-colors"
+                  >
+                    Placements
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="/courses"
                     className="hover:text-[#00AEEF] transition-colors"
                   >

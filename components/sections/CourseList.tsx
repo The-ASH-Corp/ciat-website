@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import Image from "next/image";
 import {
   Clock,
@@ -11,10 +11,16 @@ import {
   Laptop,
   Award,
   ChevronRight,
+  ChevronLeft,
   FileText,
   X,
+  Play,
+  Pause,
+  Sparkles,
+  Flame,
 } from "lucide-react";
 import UnderlineHighlight from "@/components/ui/UnderlineHighlight";
+import AnimatingCourseCard from "./AnimatingCourseCard";
 
 export interface Course {
   id: string;
@@ -42,7 +48,7 @@ export interface Course {
   certification: string;
 }
 
-const COURSES: Course[] = [
+export const COURSES: Course[] = [
   {
     id: "dpat",
     title: "Diploma in Practical Accounting & Taxation (DPAT)",
@@ -393,7 +399,19 @@ const CATEGORIES = [
 export default function CourseList() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All Courses");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isMarqueePaused, setIsMarqueePaused] = useState<boolean>(false);
   const [activeModalCourse, setActiveModalCourse] = useState<Course | null>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  const scrollSlider = (direction: "left" | "right") => {
+    if (sliderRef.current) {
+      const scrollAmount = 380;
+      sliderRef.current.scrollBy({
+        left: direction === "left" ? -scrollAmount : scrollAmount,
+        behavior: "smooth",
+      });
+    }
+  };
 
   const filteredCourses = useMemo(() => {
     return COURSES.filter((course) => {
@@ -414,8 +432,91 @@ export default function CourseList() {
   }, [selectedCategory, searchQuery]);
 
   return (
-    <section id="course-list" className="py-20 lg:py-28 bg-[#F8FCFB] relative">
-      <div className="max-w-[1240px] mx-auto px-6">
+    <section id="course-list" className="py-20 lg:py-28 bg-[#F8FCFB] relative overflow-hidden">
+      {/* ======================================================== */}
+      {/* 1. ANIMATING COURSE CARD LIST: CONTINUOUS MARQUEE TRACK  */}
+      {/* ======================================================== */}
+      <div className="mb-20">
+        <div className="max-w-[1240px] mx-auto px-6 mb-8 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center gap-2 bg-[#E3F8EE] text-[#00A556] text-xs font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full mb-3 border border-[#00A556]/20">
+              <Flame className="w-3.5 h-3.5" />
+              Live &amp; Trending Programs
+            </div>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#08344E]">
+              Featured Programs &mdash;{" "}
+              <UnderlineHighlight color="#00AEEF">Continuous Showcase</UnderlineHighlight>
+            </h2>
+          </div>
+
+          {/* Marquee Interactive Controls */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsMarqueePaused(!isMarqueePaused)}
+              className="px-4 py-2 rounded-full bg-white border border-gray-200 text-xs font-bold text-[#08344E] hover:border-[#00AEEF] hover:text-[#00AEEF] transition-all flex items-center gap-1.5 shadow-2xs"
+            >
+              {isMarqueePaused ? (
+                <>
+                  <Play className="w-3.5 h-3.5 text-[#00A556]" />
+                  <span>Resume Animation</span>
+                </>
+              ) : (
+                <>
+                  <Pause className="w-3.5 h-3.5 text-[#00AEEF]" />
+                  <span>Pause Track</span>
+                </>
+              )}
+            </button>
+
+            <button
+              onClick={() => scrollSlider("left")}
+              className="w-9 h-9 rounded-full bg-white border border-gray-200 text-[#08344E] hover:border-[#00AEEF] hover:text-[#00AEEF] flex items-center justify-center transition-all shadow-2xs"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            <button
+              onClick={() => scrollSlider("right")}
+              className="w-9 h-9 rounded-full bg-white border border-gray-200 text-[#08344E] hover:border-[#00AEEF] hover:text-[#00AEEF] flex items-center justify-center transition-all shadow-2xs"
+              aria-label="Scroll right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* The Continuous Infinite Animating Marquee Track */}
+        <div
+          ref={sliderRef}
+          className="overflow-x-auto no-scrollbar py-4 px-6"
+        >
+          <div
+            className={`flex gap-6 ${
+              isMarqueePaused ? "" : "animate-marquee"
+            }`}
+            style={{
+              animationPlayState: isMarqueePaused ? "paused" : "running",
+            }}
+          >
+            {/* Duplicated for seamless loop (COURSES + COURSES) */}
+            {[...COURSES, ...COURSES].map((course, idx) => (
+              <div key={`${course.id}-${idx}`} className="shrink-0">
+                <AnimatingCourseCard
+                  course={course}
+                  onOpenSyllabus={setActiveModalCourse}
+                  isCompact={true}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ======================================================== */}
+      {/* 2. COURSE CATALOG SEARCH & FILTERABLE GRID               */}
+      {/* ======================================================== */}
+      <div className="max-w-[1240px] mx-auto px-6 pt-8 border-t border-gray-200/80">
         {/* Section Heading */}
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-[#E0F5FC] text-[#00AEEF] font-bold text-xs uppercase tracking-wider mb-4 border border-[#00AEEF]/20">
@@ -479,7 +580,7 @@ export default function CourseList() {
           </div>
         </div>
 
-        {/* Courses Grid */}
+        {/* Courses Responsive Grid using AnimatingCourseCard */}
         {filteredCourses.length === 0 ? (
           <div className="bg-white rounded-3xl p-12 text-center max-w-md mx-auto border border-gray-100 shadow-sm">
             <BookOpen className="w-12 h-12 text-[#797979] mx-auto mb-4" />
@@ -500,120 +601,19 @@ export default function CourseList() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredCourses.map((course) => {
-              const badgeBg =
-                course.badgeColor === "green"
-                  ? "bg-[#00A556] text-white"
-                  : "bg-[#00AEEF] text-white";
-
-              return (
-                <div
-                  key={course.id}
-                  className="group bg-white rounded-[24px] overflow-hidden border border-gray-100 hover:border-[#00AEEF]/40 hover:shadow-[0_20px_40px_rgba(0,174,239,0.12)] transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Course Card Thumbnail */}
-                    <div className="relative h-52 overflow-hidden bg-gray-100">
-                      <Image
-                        src={course.image}
-                        alt={course.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-
-                      {/* Badge if present */}
-                      {course.badge && (
-                        <div
-                          className={`absolute top-4 left-4 text-xs font-bold px-3 py-1 rounded-full shadow-md ${badgeBg}`}
-                        >
-                          {course.badge}
-                        </div>
-                      )}
-
-                      {/* Mode Pill */}
-                      <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-sm text-[#08344E] text-xs font-semibold px-3 py-1 rounded-full shadow-md flex items-center gap-1.5">
-                        <Laptop className="w-3.5 h-3.5 text-[#00AEEF]" />
-                        {course.mode.split("&")[0]}
-                      </div>
-
-                      {/* Duration Tag at Bottom of Image */}
-                      <div className="absolute bottom-3 left-4 text-white text-xs font-medium flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full">
-                        <Clock className="w-3.5 h-3.5 text-[#00AEEF]" />
-                        {course.duration}
-                      </div>
-
-                      {/* Rating pill */}
-                      <div className="absolute bottom-3 right-4 text-white text-xs font-bold flex items-center gap-1 bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full">
-                        <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
-                        <span>{course.rating}</span>
-                        <span className="text-white/70 font-normal">
-                          ({course.reviewCount})
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Course Body Content */}
-                    <div className="p-6">
-                      <span className="text-xs font-semibold text-[#00AEEF] bg-[#E0F5FC] px-3 py-1 rounded-full inline-block mb-3">
-                        {course.category}
-                      </span>
-
-                      <h3 className="text-xl font-bold text-[#08344E] group-hover:text-[#00AEEF] transition-colors line-clamp-2 min-h-[56px]">
-                        {course.title}
-                      </h3>
-
-                      <p className="mt-3 text-sm text-[#797979] leading-relaxed line-clamp-2">
-                        {course.description}
-                      </p>
-
-                      {/* Highlights Bullet List */}
-                      <div className="mt-5 pt-5 border-t border-gray-100 space-y-2.5">
-                        {course.highlights.map((highlight, index) => (
-                          <div
-                            key={index}
-                            className="flex items-start gap-2 text-xs text-[#4F4F4F]"
-                          >
-                            <CheckCircle className="w-4 h-4 text-[#00A556] shrink-0 mt-0.5" />
-                            <span className="line-clamp-1">{highlight}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Certification Pill */}
-                      <div className="mt-4 pt-3 border-t border-dashed border-gray-100 flex items-center gap-2 text-[11px] font-medium text-[#08344E]/80">
-                        <Award className="w-4 h-4 text-[#00AEEF] shrink-0" />
-                        <span className="truncate">{course.certification}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Card Actions Footer */}
-                  <div className="px-6 pb-6 pt-2 grid grid-cols-2 gap-3">
-                    <button
-                      onClick={() => setActiveModalCourse(course)}
-                      className="w-full inline-flex items-center justify-center gap-1 py-2.5 px-3 rounded-full border border-[#08344E]/20 text-[#08344E] hover:border-[#00AEEF] hover:text-[#00AEEF] hover:bg-[#E0F5FC]/30 text-xs font-bold transition-all"
-                    >
-                      <FileText className="w-3.5 h-3.5" />
-                      Syllabus
-                    </button>
-
-                    <a
-                      href="/contact"
-                      className="w-full inline-flex items-center justify-center gap-1 py-2.5 px-3 rounded-full bg-[#00AEEF] hover:bg-[#00A556] text-white text-xs font-bold transition-all shadow-sm hover:shadow active:scale-95 text-center"
-                    >
-                      Enroll Now
-                      <ChevronRight className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
+            {filteredCourses.map((course) => (
+              <AnimatingCourseCard
+                key={course.id}
+                course={course}
+                onOpenSyllabus={setActiveModalCourse}
+                isCompact={false}
+              />
+            ))}
           </div>
         )}
       </div>
 
-      {/* Course Syllabus Modal */}
+      {/* Course Detailed Syllabus Modal */}
       {activeModalCourse && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
           <div

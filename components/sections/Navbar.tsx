@@ -43,7 +43,7 @@ export default function Navbar() {
             Contact
           </a>
           <a
-            href="/#placements"
+            href="/placements"
             className="text-[#08344E]/85 hover:text-[#00AEEF] transition-colors"
           >
             Placements
@@ -106,7 +106,7 @@ export default function Navbar() {
             Contact
           </a>
           <a
-            href="/#placements"
+            href="/placements"
             onClick={() => setMobileMenuOpen(false)}
             className="py-1 hover:text-[#00AEEF]"
           >
