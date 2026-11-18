@@ -78,3 +78,34 @@ html {
 .animate-marquee-reverse:hover {
   animation-play-state: paused;
 }
+
+/* Clean Sequential Left-to-Right Logo Transitions (Zero Bleed, Zero Overlap) */
+@keyframes logo-exit-right {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(32px);
+  }
+}
+
+@keyframes logo-enter-left {
+  0% {
+    opacity: 0;
+    transform: translateX(-32px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-logo-exit {
+  animation: logo-exit-right 280ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+
+.animate-logo-enter {
+  animation: logo-enter-left 340ms cubic-bezier(0, 0, 0.2, 1) forwards;
+}

@@ -1,8 +1,53 @@
-import React from "react";
-import { TrendingUp, Headphones, CreditCard } from "lucide-react";
+"use client";
+
+import React, { useState } from "react";
+import { TrendingUp, Headphones, CreditCard, ArrowRight } from "lucide-react";
 import UnderlineHighlight from "@/components/ui/UnderlineHighlight";
 
+interface FeatureCard {
+  id: string;
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  colorTheme: "cyan" | "green";
+  link: string;
+}
+
+const FEATURES: FeatureCard[] = [
+  {
+    id: "efficient-investment",
+    icon: TrendingUp,
+    title: "Efficient Investment",
+    description:
+      "Lorem ipsum dolor sit amet, commodo conse consecteturet deus adipiscing elit, sed do eiusmod tempor ut.",
+    colorTheme: "cyan",
+    link: "#services",
+  },
+  {
+    id: "professional-support",
+    icon: Headphones,
+    title: "Professional Support",
+    description:
+      "Lorem ipsum dolor sit amet, commodo conse consecteturet deus adipiscing elit, sed do eiusmod tempor ut.",
+    colorTheme: "green",
+    link: "#services",
+  },
+  {
+    id: "transparent-pricing",
+    icon: CreditCard,
+    title: "Transparent Pricing",
+    description:
+      "Lorem ipsum dolor sit amet, commodo conse consecteturet deus adipiscing elit, sed do eiusmod tempor ut.",
+    colorTheme: "cyan",
+    link: "#pricing",
+  },
+];
+
 export default function Features() {
+  // Default active card is Card 3 (index 2) matching original design
+  // Hovering any card activates it with the elevated background and styling
+  const [activeCard, setActiveCard] = useState<number>(2);
+
   return (
     <section className="py-20 lg:py-28 bg-white">
       <div className="max-w-[1240px] mx-auto px-6">
@@ -24,76 +69,74 @@ export default function Features() {
           </div>
         </div>
 
-        {/* 3 Value Pillars: Card 1 & 2 Flat, Card 3 Elevated White Card */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
-          {/* Feature 1: Efficient Investment (Flat) */}
-          <div className="p-4 sm:p-6 flex flex-col justify-between">
-            <div>
-              <div className="w-20 h-20 rounded-full bg-[#E0F5FC] border-[5px] border-[#C7F0FD] text-[#00AEEF] flex items-center justify-center mb-6 shadow-sm">
-                <TrendingUp className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-[#08344E] mb-4">
-                Efficient Investment
-              </h3>
-              <p className="text-[#797979] text-[15px] leading-relaxed mb-8">
-                Lorem ipsum dolor sit amet, commodo conse consecteturet deus
-                adipiscing elit, sed do eiusmod tempor ut.
-              </p>
-            </div>
-            <a
-              href="#services"
-              className="inline-flex items-center gap-2 text-xl font-bold text-[#00AEEF] hover:text-[#00A556] transition-colors"
-              aria-label="Efficient Investment link"
-            >
-              &rarr;
-            </a>
-          </div>
+        {/* 3 Value Pillars: Interactive Card Elevation on Hover */}
+        <div
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 items-end"
+          onMouseLeave={() => setActiveCard(2)}
+        >
+          {FEATURES.map((feature, index) => {
+            const Icon = feature.icon;
+            const isGreen = feature.colorTheme === "green";
+            const isActive = activeCard === index;
 
-          {/* Feature 2: Professional Support (Flat) */}
-          <div className="p-4 sm:p-6 flex flex-col justify-between">
-            <div>
-              <div className="w-20 h-20 rounded-full bg-[#E3F8EE] border-[5px] border-[#C3F3DC] text-[#00A556] flex items-center justify-center mb-6 shadow-sm">
-                <Headphones className="w-8 h-8" />
-              </div>
-              <h3 className="text-2xl font-bold text-[#08344E] mb-4">
-                Professional Support
-              </h3>
-              <p className="text-[#797979] text-[15px] leading-relaxed mb-8">
-                Lorem ipsum dolor sit amet, commodo conse consecteturet deus
-                adipiscing elit, sed do eiusmod tempor ut.
-              </p>
-            </div>
-            <a
-              href="#services"
-              className="inline-flex items-center gap-2 text-xl font-bold text-[#00A556] hover:text-[#00AEEF] transition-colors"
-              aria-label="Professional Support link"
-            >
-              &rarr;
-            </a>
-          </div>
+            return (
+              <div
+                key={feature.id}
+                onMouseEnter={() => setActiveCard(index)}
+                className={`group p-8 sm:p-10 rounded-[28px] min-h-[420px] flex flex-col justify-between transition-all duration-500 cursor-pointer border ${
+                  isActive
+                    ? isGreen
+                      ? "bg-white border-[#C3F3DC] shadow-[0_20px_50px_rgba(0,165,86,0.12)] -translate-y-4 md:-translate-y-6"
+                      : "bg-white border-[#C7F0FD] shadow-[0_20px_50px_rgba(0,174,239,0.12)] -translate-y-4 md:-translate-y-6"
+                    : "bg-transparent border-transparent shadow-none translate-y-0 hover:bg-white/40"
+                }`}
+              >
+                <div>
+                  {/* Top Icon Badge */}
+                  <div
+                    className={`w-20 h-20 rounded-full border-[5px] flex items-center justify-center mb-6 shadow-sm transition-transform duration-500 ${
+                      isActive ? "scale-105" : "group-hover:scale-105"
+                    } ${
+                      isGreen
+                        ? "bg-[#E3F8EE] border-[#C3F3DC] text-[#00A556]"
+                        : "bg-[#E0F5FC] border-[#C7F0FD] text-[#00AEEF]"
+                    }`}
+                  >
+                    <Icon className="w-8 h-8" />
+                  </div>
 
-          {/* Feature 3: Transparent Pricing (ELEVATED WHITE CARD) */}
-          <div className="bg-white rounded-2xl p-8 sm:p-10 shadow-[0_20px_50px_rgba(0,174,239,0.1)] border border-[#C7F0FD] -translate-y-4 md:-translate-y-8 flex flex-col justify-between">
-            <div>
-              <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-[#E0F5FC] to-[#E3F8EE] border-[5px] border-[#C7F0FD] text-[#00AEEF] flex items-center justify-center mb-6 shadow-sm">
-                <CreditCard className="w-8 h-8" />
+                  {/* Title */}
+                  <h3 className="text-2xl font-bold text-[#08344E] mb-4 group-hover:text-[#00AEEF] transition-colors">
+                    {feature.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-[#797979] text-[15px] leading-relaxed mb-8">
+                    {feature.description}
+                  </p>
+                </div>
+
+                {/* Bottom Action Arrow */}
+                <div className="pt-2">
+                  <a
+                    href={feature.link}
+                    className={`w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold transition-all duration-500 ${
+                      isActive
+                        ? isGreen
+                          ? "bg-[#E3F8EE] text-[#00A556] shadow-xs scale-105"
+                          : "bg-[#E0F5FC] text-[#00AEEF] shadow-xs scale-105"
+                        : isGreen
+                        ? "bg-transparent text-[#00A556] justify-start group-hover:text-[#00AEEF]"
+                        : "bg-transparent text-[#00AEEF] justify-start group-hover:text-[#00A556]"
+                    }`}
+                    aria-label={`${feature.title} link`}
+                  >
+                    <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </a>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold text-[#08344E] mb-4">
-                Transparent Pricing
-              </h3>
-              <p className="text-[#797979] text-[15px] leading-relaxed mb-8">
-                Lorem ipsum dolor sit amet, commodo conse consecteturet deus
-                adipiscing elit, sed do eiusmod tempor ut.
-              </p>
-            </div>
-            <a
-              href="#pricing"
-              className="w-12 h-12 rounded-full bg-[#E0F5FC] hover:bg-gradient-to-r hover:from-[#00AEEF] hover:to-[#00A556] text-[#00AEEF] hover:text-white flex items-center justify-center text-xl font-bold transition-all shadow-sm"
-              aria-label="Transparent Pricing link"
-            >
-              &rarr;
-            </a>
-          </div>
+            );
+          })}
         </div>
       </div>
     </section>
